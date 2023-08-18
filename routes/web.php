@@ -39,6 +39,7 @@ Route::middleware(['auth', 'role:admin'])
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('/roles', RoleController::class);
+    Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.permissions');
     Route::resource('/permissions', PermissionController::class);
     Route::resource('/users', UserController::class);
 

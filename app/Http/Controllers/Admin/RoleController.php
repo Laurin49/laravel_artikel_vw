@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.roles.create');
     }
 
     /**
@@ -30,7 +31,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(['name' => ['required', 'min:3']]);
+        Role::create($validated);
+
+        return to_route('admin.roles.index')->with('message', 'New Role added successfully.');
     }
 
     /**
@@ -44,24 +48,35 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Role $role)
     {
-        //
+        $permissions = Permission::all();
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $validated = $request->validate(['name' => ['required', 'min:3']]);
+        $role->update($validated);
+
+        return to_route('admin.roles.index')->with('message', 'Role updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return to_route('admin.roles.index')->with('message', 'Role deleted successfully.');
+    }
+
+    public function assignPermissions(Request $request, Role $role)
+    {
+        $role->permissions()->sync($request->permissions);
+        return back()->with('message', 'Permissions added.');
     }
 }

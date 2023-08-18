@@ -21,6 +21,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Article::class);
         return view('articles.create');
     }
 
@@ -29,6 +30,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request, Article $article)
     {
+        $this->authorize('create', Article::class);
         $validated = $request->validate(['name' => 'required']);
         Article::create($validated);
 

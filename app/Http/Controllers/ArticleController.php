@@ -50,22 +50,30 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        $this->authorize('update', $article);
         return view('articles.edit', compact('article'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Article $article)
     {
-        //
+        $this->authorize('update', $article);
+        $validated = $request->validate(['name' => 'required']);
+        $article->update($validated);
+
+        return to_route('articles.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Article $article)
     {
-        //
+        $this->authorize('delete', $article);
+        $article->delete();
+
+        return to_route('articles.index');
     }
 }

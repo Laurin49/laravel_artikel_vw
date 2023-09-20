@@ -17,42 +17,46 @@
                             Name
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Category
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             <span class="sr-only">Edit</span>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($articles as $article)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{ $article->id }}
-                            </th>
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{ $article->name }}
-                            </th>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ $article->id }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ $article->name }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ $article->category->name }}
+                        </th>
 
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex space-x-2">
-                                    @can('update', $article)
-                                        <a href="{{ route('articles.edit', $article->id) }}"
-                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit
-                                        </a>
-                                    @endcan
-                                    @can('delete', $article)
-                                        <form method="POST" action="{{ route('articles.destroy', $article->id) }}"
-                                            onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete
-                                            </button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
-                        </tr>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex space-x-2">
+                                @can('update', $article)
+                                <a href="{{ route('articles.edit', $article->id) }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit
+                                </a>
+                                @endcan
+                                @can('delete', $article)
+                                <form method="POST" action="{{ route('articles.destroy', $article->id) }}"
+                                    onsubmit="return confirm('Are you sure?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete
+                                    </button>
+                                </form>
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
                     @endforeach
 
                 </tbody>

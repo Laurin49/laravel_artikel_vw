@@ -17,7 +17,18 @@
                         <span class="text-sm text-red-400">{{ $message }}</span>
                     @enderror
                 </div>
-
+                <div class="mt-4 mb-6">
+                    <label class="block text-sm font-medium text-gray-700" for="category">
+                        <span class=""> Categories: </span>
+                        <select class="block w-full mt-1" name="category_id">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                </div>      
                 <button type="submit"
                     class="w-full py-3 mt-10 font-medium text-white uppercase bg-indigo-400 rounded-md hover:bg-indigo-600 focus:outline-none hover:shadow-none">
                     Create

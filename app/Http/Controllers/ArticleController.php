@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -22,7 +23,9 @@ class ArticleController extends Controller
     public function create()
     {
         $this->authorize('create', Article::class);
-        return view('articles.create');
+
+        $categories = Category::all();
+        return view('articles.create', compact('categories'));
     }
 
     /**
@@ -31,10 +34,14 @@ class ArticleController extends Controller
     public function store(Request $request, Article $article)
     {
         $this->authorize('create', Article::class);
-        $validated = $request->validate(['name' => 'required']);
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'category_id' => 'required'
+        ]);
         Article::create($validated);
 
-        return to_route('articles.index');
+        return to_route('articles.index')->with('message', 'Article created successfully.');
     }
 
     /**
@@ -51,7 +58,9 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $this->authorize('update', $article);
-        return view('articles.edit', compact('article'));
+
+        $categories = Category::all();
+        return view('articles.edit', compact('article', 'categories'));
     }
 
     /**
@@ -60,10 +69,14 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $this->authorize('update', $article);
-        $validated = $request->validate(['name' => 'required']);
+        
+        $validated = $request->validate([
+            'name' => 'required',
+            'category_id' => 'required'
+        ]);
         $article->update($validated);
 
-        return to_route('articles.index');
+        return to_route('articles.index')->with('message', 'Article updated successfully.');
     }
 
     /**
@@ -74,6 +87,6 @@ class ArticleController extends Controller
         $this->authorize('delete', $article);
         $article->delete();
 
-        return to_route('articles.index');
+        return to_route('articles.index')->with('message', 'Article deleted successfully.');
     }
 }

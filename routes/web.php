@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -31,10 +32,12 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::resource('/categories', CategoryController::class);
     Route::resource('/roles', RoleController::class);
     Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.permissions');
     Route::resource('/permissions', PermissionController::class);
     Route::resource('/users', UserController::class);
+
 });
 
 // Profile und Dashboard
